@@ -1,0 +1,40 @@
+import glob
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn.cluster
+%matplotlib inline
+
+
+from PIL import Image
+list_im = glob.glob("*.png")
+imgs    = [ plt.imread(i) for i in list_im ]
+#print(np.shape(imgs))
+X=[i.reshape((-1)) for i in imgs]
+#print(np.shape(X))
+#print(X[40])
+n= np.arange(2,4)
+inercias=[]
+for i in range(len(n)):
+    n_clusters=n[i]
+    k_means = sklearn.cluster.KMeans(n_clusters=n_clusters)
+    k_means.fit(X)
+    cluster=k_means.predict(X)
+    centros=k_means.cluster_centers_
+    inercia=0
+    for j in range(n_clusters):    
+        ii=np.asarray(np.where(cluster == j))
+        for k in range(np.shape(ii)[1]):
+            index=int(ii[0,k])
+            a=np.asarray(X[index])-np.asarray(centros[j])
+            inercia=inercia+np.linalg.norm(a)       
+    inercias.append(inercia)
+    
+    
+        
+print(inercias)
+
+plt.figure()
+plt.plot(n,inercias)
+plt.xlabel('clusters')
+plt.ylabel('Inercias')
+plt.savefig("inercias.png")
