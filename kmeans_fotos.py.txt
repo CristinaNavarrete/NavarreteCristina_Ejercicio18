@@ -12,7 +12,7 @@ imgs    = [ plt.imread(i) for i in list_im ]
 X=[i.reshape((-1)) for i in imgs]
 #print(np.shape(X))
 #print(X[40])
-n= np.arange(2,4)
+n= np.arange(2,21)
 inercias=[]
 for i in range(len(n)):
     n_clusters=n[i]
